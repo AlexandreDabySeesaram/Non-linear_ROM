@@ -240,13 +240,13 @@ one_n = np.ones((n, n)) / n
 K_centered = K - one_n @ K - K @ one_n + one_n @ K @ one_n
 ```
 
-We perform an SVD of the centered kernel to find the principal directions of the high dimensional space
+We perform an SVD of the centered kernel to find the principal directions of the high dimensional space,
 
 ```{python}
 U, S, V = np.linalg.svd(K_centered)
 ```
 
-That we then truncates. we then project the initial dataset onto the principal directions in the latent space
+that we then truncates. we then project the initial dataset onto the principal directions in the latent space
 
 ```{python}
 U_k = U[:, :n_components]  # first eigenvectors
@@ -257,7 +257,7 @@ Y_kpca = U_k @ S_k
 
 ### Plots
 
-In the physical space
+In the physical space (the plot is iteractive, feel free to explore the 3D dataset !)
 
 ```{python}
 colors = plt.cm.viridis(np.linspace(0, 1, len(X[0,:])))                                        # Generate a color gradient
