@@ -1,5 +1,5 @@
 ---
-title: An SVD-Autoencoder comparison
+title: A kPCA illustration
 image: FENNI_TD.png
 toc: false
 about:
@@ -7,7 +7,7 @@ about:
   links:
     - icon: github
       text: Github
-      href: https://github.com/AlexandreDabySeesaram/SVD_Investigations/tree/main
+      href: https://github.com/AlexandreDabySeesaram/Non-linear_ROM
 format:
   html:
     page-layout: full
@@ -15,7 +15,7 @@ format:
 
 # Welcome
 
-To this statis website with jupyternotebooks.
+To this small illustration of non-linear manifold learning using kPCA
 
 
 
