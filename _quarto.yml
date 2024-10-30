@@ -6,20 +6,14 @@ project:
   type: website
   output-dir: public
 website:
-  title: "A static jupyter's book website"
-  description: "SVD and autoencoder"
+  title: "A kPCA illustration"
+  description: "A kPCA illustration"
   navbar:
     right:
       - href: index.qmd
         text: Home
-      - href: Autoencoder.qmd
-        text: Autoencoder
-      - href: SVD.qmd
-        text: SVD
-      - href: SpacePartition_Separability.ipynb
-        text: Direct SVD_jupyter
-      - href: SP.qmd
-        text: SVD_jupyter
+      - href: kPCA_v_SVD.qmd
+        text: kPCA v.s. SVD
 format:
   pdf: default
   html:
