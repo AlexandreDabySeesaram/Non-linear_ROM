@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "kPCA_v_SVD.html",
+    "href": "kPCA_v_SVD.html",
+    "title": "Non-linear manifold learning",
+    "section": "",
+    "text": "This section focuses on using using the SVD to find a linear subspace of lower dimension in which to project the data. The objective is to show that dimensionality reduction works well in linear subspaces when the underlying structure is linear but quickly shows limitation for non-linear structures."
+  },
+  {
+    "objectID": "kPCA_v_SVD.html#kernel-principal-component-analysis-kpca",
+    "href": "kPCA_v_SVD.html#kernel-principal-component-analysis-kpca",
+    "title": "Non-linear manifold learning",
+    "section": "kernel Principal Component Analysis (kPCA)",
+    "text": "kernel Principal Component Analysis (kPCA)\nThis section focuses on using using the kPCA to find a non-linear manifold of lower dimension in which to project the data. The objective is to show that dimensionality reduction works well in non-linear cases where the SVD failed.\n\nApplication to sin function\nThe first application is an sin functions in R3\n\nFunction definition and kPCA computation\n\n\nCode\nx = np.linspace(0,4*np.pi,1500)\ny = np.sin(x)                                                                   # Sin function\nn_coef = 0                                                                      # Noise level\nz = np.random.randn(*x.shape)        \nX = np.stack((x,y,z))                                                           # Create 3D dataset\nX += + n_coef*np.random.rand(*X.shape)                                          # Add noise\n\n\nPCA conventions are transposed compared to SVD\n\n\nCode\nY = np.transpose(X)\n\n\n\nkPCA parameters\n\n\nCode\nn_components = 2                                                                 # Number of component of the kpca\nsigma =100                                                                       # sigma for Gaussian kernel\n\n\n\n\nCompute the (Gaussian) kernel\n\n\nCode\nd_2 = np.sum(Y**2, axis=1).reshape(-1, 1) + np.sum(Y**2, axis=1) - 2 * np.dot(Y, Y.T)\nK = np.exp(-d_2 / (2 * sigma**2))\n\n\n\n\nCenter the kernel matrix\n\n\nCode\nn = K.shape[0]\none_n = np.ones((n, n)) / n\nK_centered = K - one_n @ K - K @ one_n + one_n @ K @ one_n\n\n\nSVD of the centered kernel\n\n\nCode\nU, S, V = np.linalg.svd(K_centered)\n\n\nTruncation and projection\n\n\nCode\nU_k = U[:, :n_components]  # first eigenvectors\nS_k = np.diag(S[:n_components])  # first singular values\n# Project the centered kernel matrix onto the first eigenvectors\nY_kpca = U_k @ S_k  \n\n\n\n\n\n\nPlots\nIn the physical space\n\n\nCode\ncolors = plt.cm.viridis(np.linspace(0, 1, len(X[0,:])))                                        # Generate a color gradient\n\nimport plotly.graph_objects as go\n\n\n# colors_plotly = colors[:, :3]\ncolors_plotly = np.linspace(0, 1, X.shape[1])\n\nx_points = X[0, :]\ny_points = X[1, :]\nz_points = X[2, :]\n\n# Create the 3D scatter plot\nfig = go.Figure(data=[go.Scatter3d(\n    x=x_points,\n    y=y_points,\n    z=z_points,\n    mode='markers',\n    marker=dict(\n        size=5,                                                                         # Size of the markers\n        color=colors_plotly,                                                            # Color of the markers\n        colorscale='viridis',                                                           # Color scale\n        showscale=True,                                                                 # Show color scale\n    )\n)])\n\nfig.update_layout(\n    scene=dict(\n        xaxis_title='x',\n        yaxis_title='y',\n        zaxis_title='z',\n    ),\n    title='Physical Space'\n)\nfig.show()\n\n\n                                                \n\n\nIn the latent space\n\n\nCode\nplt.scatter(Y_kpca[:,0], Y_kpca[:,1], color=colors, s=100)                                     # s=100 for larger points\nplt.xlabel(r\"$\\nu_1$\")\nplt.ylabel(r\"$\\nu_2$\")\nplt.title('latent space')\nplt.gca().set_aspect('equal', adjustable='box')\nplt.show()"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "A kPCA illustration",
+    "section": "",
+    "text": "Welcome\nTo this small illustration of non-linear manifold learning using kPCA"
+  }
+]
