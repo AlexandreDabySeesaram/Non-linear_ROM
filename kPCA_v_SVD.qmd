@@ -7,15 +7,17 @@ format:
 jupyter: python3
 ---
 
+# SVD
 
 This section focuses on using using the SVD to find a linear subspace of lower dimension in which to project the data. The objective is to show that dimensionality reduction works well in linear subspaces when the underlying structure is linear but quickly shows limitation for non-linear structures.
 
-### Application to affine function
+## Application to affine function
 
-The first application is an affine functions in R2
+We first apply the SVD to an affine functions. The physical space of the dataset is $\mathbb{R}^2$ but the data set is in fact 1D. The SVD is used to find a suitable 1D linear subspace of $\mathbb{R}^2$ in which the data can be projected without loosing any information.
 
-#### Function definition and SVD computation
+### Function definition and SVD computation
 
+We start by defining the function and by computing the SVD of all the 2D snapshots.
 
 ```{python}
 import numpy as np
@@ -43,9 +45,9 @@ X += + n_coef*np.random.rand(*X.shape)                                          
 U,S,V = np.linalg.svd(X)                                                                   # SV Decomposition
 ```
 
-#### Plots
+### Plots
 
-Plot the principal directions from onto the data set
+To visualise the underlying space found in the data by the SVD, we plot the principal directions $\nu_1$ and $\nu_2$ onto the initial dataset.
 
 ```{python}
 
@@ -70,7 +72,7 @@ plt.close()
 
 ```
 
-And in the latent space
+We then project the data onto the latent space $\left(\nu_1,\nu_2\right)$.
 
 ```{python}
 
@@ -85,13 +87,16 @@ plt.show()
 plt.close()
 ```
 
-We can see that the initial 2D data lie in a 1D space and that the first principal direction $\nu_1$ is sufficient to describe the data set.
+We can see that the initial 2D data in fact lies in a 1D space and that the first principal direction $\nu_1$ is sufficient to describe the full data set.
 
-### Application to non-linear function
+## Application to non-linear function
 
 To show the limitation of the SVD to find non-linear manifold, a sin function is now studied in a similar manner.
 
-#### Function definition and SVD computation
+### Function definition and SVD computation
+
+Again, we start by defining the function and by computing the SVD of all the 2D snapshots.
+
 
 ```{python}
 # In 1D for an sin function
@@ -119,9 +124,9 @@ U,S,V = np.linalg.svd(X)                                                        
 
 ```
 
-#### Plots
+### Plots
 
-Plot the principal directions from onto the data set
+In a similar manner, we plot the principal directions $\nu_1$ and $\nu_2$ onto the data set
 
 ```{python}
 
@@ -148,7 +153,7 @@ plt.show()
 plt.close()
 ```
 
-And in the latent space
+And we project the data onto the latent space $\left(\nu_1,\nu_2\right)$.
 
 ```{python}
 # in the latent space
@@ -162,17 +167,17 @@ plt.show()
 plt.close()
 ```
 
-The SVD does not exhibit a lower dimension space in which the data can be represented. Both principal directions are required to represent the non-linear data set.
+This time, the SVD does not exhibit a lower dimension space in which the data can be represented. Both principal directions are required to represent the non-linear data set.
 
-## kernel Principal Component Analysis (kPCA)
+# kernel Principal Component Analysis (kPCA)
 
 This section focuses on using using the kPCA to find a non-linear manifold of lower dimension in which to project the data. The objective is to show that dimensionality reduction works well in non-linear cases where the SVD failed.
 
-### Application to sin function
+## Application to sin function
 
-The first application is an sin functions in R3
+We first apply the SVD to an sin function. The physical space of the dataset is $\mathbb{R}32$ but the data set is in fact 2D. The kPCA is used to find a suitable 2D (non-linear) manifold in which the data can be projected without loosing any information.
 
-#### Function definition and kPCA computation
+### Function definition 
 
 ```{python}
 x = np.linspace(0,4*np.pi,1500)
@@ -183,27 +188,42 @@ X = np.stack((x,y,z))                                                           
 X += + n_coef*np.random.rand(*X.shape)                                          # Add noise
 ```
 
-PCA conventions are transposed compared to SVD
+***Note***: The PCA conventions are transposed compared to SVD's conventions
 
 ```{python}
 Y = np.transpose(X)
 ```
 
-##### kPCA parameters
+### kPCA parameters
+
+We define the kPCA paramerets, namely
+
+* The number of components
+* $\sigma$, the width of the kernel, controlling how much distant point are considered similar
+    - A smaller $\sigma$ emphasises local structures, while a larger σσ captures more global patterns.
 
 ```{python}
 n_components = 2                                                                 # Number of component of the kpca
 sigma =100                                                                       # sigma for Gaussian kernel
 ```
 
-##### Compute the (Gaussian) kernel
+### Compute the (Gaussian) kernel
 
+We now compute the kernel matrix based on the distance matrix using a Gaussian kernel
+
+$$K(x_i, x_j) = \exp\left(-\frac{\|x_i - x_j\|^2}{2\sigma^2}\right)$$
 ```{python}
 d_2 = np.sum(Y**2, axis=1).reshape(-1, 1) + np.sum(Y**2, axis=1) - 2 * np.dot(Y, Y.T)
 K = np.exp(-d_2 / (2 * sigma**2))
 ```
 
-##### Center the kernel matrix
+### Center the kernel matrix
+
+We then center the kernel matrix as the PCA expects 0-mean data
+
+$$
+K_{\text{centered}} = K - \frac{1}{n} \mathbf{1} K - \frac{1}{n} K \mathbf{1} + \frac{1}{n^2} \mathbf{1} K \mathbf{1}
+$$
 
 ```{python}
 n = K.shape[0]
@@ -211,13 +231,13 @@ one_n = np.ones((n, n)) / n
 K_centered = K - one_n @ K - K @ one_n + one_n @ K @ one_n
 ```
 
-SVD of the centered kernel
+We perform an SVD of the centered kernel to find the principal directions of the high dimensional space
 
 ```{python}
 U, S, V = np.linalg.svd(K_centered)
 ```
 
-Truncation and projection
+That we then truncates. we then project the initial dataset onto the principal directions in the latent space
 
 ```{python}
 U_k = U[:, :n_components]  # first eigenvectors
@@ -279,5 +299,5 @@ plt.gca().set_aspect('equal', adjustable='box')
 plt.show()
 ```
 
-
+We can see that contrary to the SVD, the kPCA could decrease the dimensionnality of the supposidly 3D space into a 2D space, finding the underlying non-linear manifold onto which the dataset lies. 
 
