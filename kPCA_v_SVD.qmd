@@ -257,7 +257,7 @@ Y_kpca = U_k @ S_k
 
 ### Plots
 
-In the physical space (the plot is iteractive, feel free to explore the 3D dataset !)
+In the physical space (the plot is interactive, feel free to explore the 3D dataset !)
 
 ```{python}
 colors = plt.cm.viridis(np.linspace(0, 1, len(X[0,:])))                                        # Generate a color gradient
@@ -399,7 +399,7 @@ Y_kpca = U_k @ S_k
 
 ### Plots
 
-In the physical space (the plot is iteractive, feel free to explore the 3D dataset !)
+In the physical space (the plot is interactive, feel free to explore the 3D dataset !)
 
 ```{python}
 colors = plt.cm.viridis(np.linspace(0, 1, len(X[0,:])))                                        # Generate a color gradient
