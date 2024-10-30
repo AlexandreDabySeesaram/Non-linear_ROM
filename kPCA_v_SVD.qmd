@@ -50,6 +50,7 @@ U,S,V = np.linalg.svd(X)                                                        
 To visualise the underlying space found in the data by the SVD, we plot the principal directions $\nu_1$ and $\nu_2$ onto the initial dataset.
 
 ```{python}
+colors_1D = plt.cm.viridis(np.linspace(0, 1, len(X[0,:])))                                        # Generate a color gradient
 
 # plots
 # Origin point
@@ -65,7 +66,10 @@ plt.ylim(-4, 15)
 plt.xlim(-4, 15)
 plt.xlabel(r"$x$")
 plt.ylabel(r"$y$")
-plt.plot(X[0,:],X[1,:],'+')
+# plt.plot(X[0,:],X[1,:],'+')
+# plt.scatter(X[0,:],X[1,:], color=colors_1D, s=100)           
+plt.scatter(X[0,:],X[1,:], facecolors='none', edgecolors=colors_1D, s=100)             
+
 plt.title("Principal component base and data points")
 plt.show()
 plt.close()
@@ -79,7 +83,9 @@ We then project the data onto the latent space $\left(\nu_1,\nu_2\right)$.
 # in the latent space
 
 X_tilde = np.transpose(U)@X
-plt.plot(X_tilde[0,:],X_tilde[1,:],"-o")
+# plt.plot(X_tilde[0,:],X_tilde[1,:],"-o")
+plt.scatter(X_tilde[0,:],X_tilde[1,:], color=colors_1D, s=100)           
+
 plt.gca().set_aspect('equal', adjustable='box')
 plt.xlabel(r"$\nu_1$")
 plt.ylabel(r"$\nu_2$")
@@ -146,7 +152,8 @@ plt.gca().set_aspect('equal')
 # plt.xlim(-4, 15)
 plt.xlabel(r"$x$")
 plt.ylabel(r"$y$")
-plt.plot(X[0,:],X[1,:],'+')
+# plt.plot(X[0,:],X[1,:],'+')
+plt.scatter(X[0,:],X[1,:], facecolors='none', edgecolors=colors_1D, s=100)             
 
 plt.title("Principal component base and data points - sin")
 plt.show()
@@ -159,7 +166,9 @@ And we project the data onto the latent space $\left(\nu_1,\nu_2\right)$.
 # in the latent space
 
 X_tilde = np.transpose(U)@X
-plt.plot(X_tilde[0,:],X_tilde[1,:],"-o")
+# plt.plot(X_tilde[0,:],X_tilde[1,:],"-o")
+plt.scatter(X_tilde[0,:],X_tilde[1,:], color=colors_1D, s=100)           
+
 plt.gca().set_aspect('equal', adjustable='box')
 plt.xlabel(r"$\nu_1$")
 plt.ylabel(r"$\nu_2$")
