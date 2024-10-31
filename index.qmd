@@ -3,7 +3,7 @@ title: A kPCA illustration
 image: FENNI_TD.png
 toc: false
 about:
-  template: trestles
+  template: marquee
   links:
     - icon: github
       text: Github
