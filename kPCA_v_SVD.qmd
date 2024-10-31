@@ -351,7 +351,7 @@ We define the kPCA paramerets, namely
 
 * The number of components
 * $\sigma$, the width of the kernel, controlling how much distant point are considered similar
-    - A smaller $\sigma$ emphasises local structures, while a larger σσ captures more global patterns.
+    - A smaller $\sigma$ emphasises local structures, while a larger $\sigma$ captures more global patterns.
 
 ```{python}
 n_components = 2                                                                 # Number of component of the kpca
