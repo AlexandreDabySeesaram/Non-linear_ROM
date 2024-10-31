@@ -9,11 +9,12 @@ website:
   title: "A kPCA illustration"
   description: "A kPCA illustration"
   navbar:
-    right:
-      - href: index.qmd
-        text: Home
+    left:
       - href: kPCA_v_SVD.qmd
         text: kPCA v.s. SVD
+    right:
+      - href: https://alexandredabyseesaram.github.io/
+        text: Alexandre Daby-Seesaram's homepage
 format:
   pdf: default
   html:
